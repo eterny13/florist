@@ -1,0 +1,16 @@
+site_name: Domain Model
+theme:
+  name: material
+
+markdown_extensions:
+  - plantuml_markdown:
+      server: http://localhost:8080
+      format: svg
+      base_dir: ../
+
+plugins:
+  - mike:
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
+      canonical_version: null

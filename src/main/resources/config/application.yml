@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/florist?allowPublicKeyRetrieval=true&useSSL=false
+    username: florist
+    password: florist
+
+  jooq:
+    sql-dialect: mysql
+
+  flyway:
+    enabled: false

@@ -1,0 +1,76 @@
+name: Document Deploy
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: string
+        description: 'branch'
+        required: true
+        default: 'main'
+    
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
+
+jobs:
+  docs-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    if: ${{ github.event.pull_request.merged || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Get source branch name
+        id: source-branch
+        env:
+          BRANCH: ${{ github.event.pull_request.merged && github.base_ref || inputs.branch }}
+        run: |
+          set -x
+          echo value="${BRANCH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Set gitconfig
+        run: |
+          set -x
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merged && github.base_ref || steps.source-branch.outputs.value }}
+      
+      - name: Fetch deploy branch
+        env:
+          GH_PAGES_DEPLOY_BRANCH: gh-pages
+        run: |
+          set -x
+          git fetch origin "${GH_PAGES_DEPLOY_BRANCH}:${GH_PAGES_DEPLOY_BRANCH}" --depth=1
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      
+      - name: Run plantuml container
+        run: |
+          set -x
+          docker run --rm -itd -p 8080:8080 plantuml/plantuml-server
+      
+      - name: Install dependencies
+        working-directory: etc/document/mkdocs
+        run: |
+          set -x
+          pip install -r requirements.txt
+
+      - name: Deploy to GitHub Pages
+        working-directory: etc/document/mkdocs
+        env:
+          BRANCH: ${{ github.event.pull_request.merged && github.base_ref || steps.source-branch.outputs.value }}
+        run: |
+          set -x
+          mike deploy "${BRANCH//\//-}" --push

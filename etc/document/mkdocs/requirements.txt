@@ -1,0 +1,7 @@
+mkdocs
+mike
+mkdocs-material
+mkdocs-material-extensions
+mkdocs-static-i18n
+plantuml
+plantuml-markdown

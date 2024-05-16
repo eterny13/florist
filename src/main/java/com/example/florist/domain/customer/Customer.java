@@ -1,6 +1,9 @@
 package com.example.florist.domain.customer;
 
-public record Customer(
-        String name,
-        String email) {
+import lombok.Value;
+
+@Value
+public class Customer {
+    String name;
+    String email;
 }

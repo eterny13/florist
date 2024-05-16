@@ -12,7 +12,7 @@ jooq {
                 inputSchema = 'florist'
             }
             target {
-                packageName = 'com.example.florist.generated.db'
+                packageName = 'com.example.generated.db'
                 directory = "src/main/java/"
             }
         }

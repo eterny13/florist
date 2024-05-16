@@ -50,11 +50,13 @@ dependencies {
     // jooq
     implementation "org.jooq:jooq:${jooqVersion}"
     implementation "org.jooq:jooq-meta:${jooqVersion}"
-
+    // flyway
     implementation "org.flywaydb:flyway-core:9.17.0"
     implementation "org.flywaydb:flyway-mysql:9.17.0"
 
     implementation "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
+
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.4'
 
     jooqCodegen "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
     jooqCodegen "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"

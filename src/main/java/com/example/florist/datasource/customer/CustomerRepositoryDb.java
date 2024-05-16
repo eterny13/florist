@@ -1,4 +1,4 @@
-package com.example.florist.datasource;
+package com.example.florist.datasource.customer;
 
 import com.example.florist.domain.customer.Customer;
 import com.example.florist.service.customer.CustomerRepository;

@@ -1,6 +1,6 @@
-package com.example.florist.api.controller;
+package com.example.florist.api.controller.customer;
 
-import com.example.florist.api.controller.http_model.customer.CustomerRequest;
+import com.example.florist.api.controller.customer.request.CustomerRequest;
 import com.example.florist.domain.customer.Customer;
 import com.example.florist.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ public class CustomerController {
         var customer = new Customer(request.name(), request.email());
         try {
             service.persist(customer);
-            return "Created";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return "Created";
     }
 }

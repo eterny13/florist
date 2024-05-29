@@ -6,6 +6,7 @@ package com.example.generated.db;
 
 import com.example.generated.db.tables.Customer;
 import com.example.generated.db.tables.FlywaySchemaHistory;
+import com.example.generated.db.tables.OrderDetail;
 import com.example.generated.db.tables.Stock;
 
 import java.util.Arrays;
@@ -40,6 +41,11 @@ public class Florist extends SchemaImpl {
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
+     * The table <code>florist.order_detail</code>.
+     */
+    public final OrderDetail ORDER_DETAIL = OrderDetail.ORDER_DETAIL;
+
+    /**
      * The table <code>florist.stock</code>.
      */
     public final Stock STOCK = Stock.STOCK;
@@ -62,6 +68,7 @@ public class Florist extends SchemaImpl {
         return Arrays.asList(
             Customer.CUSTOMER,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+            OrderDetail.ORDER_DETAIL,
             Stock.STOCK
         );
     }

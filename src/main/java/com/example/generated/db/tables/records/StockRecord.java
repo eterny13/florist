@@ -21,59 +21,73 @@ public class StockRecord extends UpdatableRecordImpl<StockRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>florist.stock.code</code>.
+     * Setter for <code>florist.stock.id</code>.
      */
-    public void setCode(Integer value) {
+    public void setId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>florist.stock.code</code>.
+     * Getter for <code>florist.stock.id</code>.
      */
-    public Integer getCode() {
+    public Integer getId() {
         return (Integer) get(0);
+    }
+
+    /**
+     * Setter for <code>florist.stock.flower_code</code>.
+     */
+    public void setFlowerCode(Integer value) {
+        set(1, value);
+    }
+
+    /**
+     * Getter for <code>florist.stock.flower_code</code>.
+     */
+    public Integer getFlowerCode() {
+        return (Integer) get(1);
     }
 
     /**
      * Setter for <code>florist.stock.flower_name</code>.
      */
     public void setFlowerName(String value) {
-        set(1, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>florist.stock.flower_name</code>.
      */
     public String getFlowerName() {
-        return (String) get(1);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>florist.stock.quantity</code>.
      */
     public void setQuantity(Integer value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>florist.stock.quantity</code>.
      */
     public Integer getQuantity() {
-        return (Integer) get(2);
+        return (Integer) get(3);
     }
 
     /**
      * Setter for <code>florist.stock.arrival_date</code>.
      */
     public void setArrivalDate(LocalDate value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>florist.stock.arrival_date</code>.
      */
     public LocalDate getArrivalDate() {
-        return (LocalDate) get(3);
+        return (LocalDate) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -99,10 +113,11 @@ public class StockRecord extends UpdatableRecordImpl<StockRecord> {
     /**
      * Create a detached, initialised StockRecord
      */
-    public StockRecord(Integer code, String flowerName, Integer quantity, LocalDate arrivalDate) {
+    public StockRecord(Integer id, Integer flowerCode, String flowerName, Integer quantity, LocalDate arrivalDate) {
         super(Stock.STOCK);
 
-        setCode(code);
+        setId(id);
+        setFlowerCode(flowerCode);
         setFlowerName(flowerName);
         setQuantity(quantity);
         setArrivalDate(arrivalDate);

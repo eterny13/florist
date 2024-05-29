@@ -21,15 +21,15 @@ public class CustomerRecord extends UpdatableRecordImpl<CustomerRecord> {
     /**
      * Setter for <code>florist.customer.id</code>.
      */
-    public void setId(Integer value) {
+    public void setId(String value) {
         set(0, value);
     }
 
     /**
      * Getter for <code>florist.customer.id</code>.
      */
-    public Integer getId() {
-        return (Integer) get(0);
+    public String getId() {
+        return (String) get(0);
     }
 
     /**
@@ -65,7 +65,7 @@ public class CustomerRecord extends UpdatableRecordImpl<CustomerRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Record1<Integer> key() {
+    public Record1<String> key() {
         return (Record1) super.key();
     }
 
@@ -83,7 +83,7 @@ public class CustomerRecord extends UpdatableRecordImpl<CustomerRecord> {
     /**
      * Create a detached, initialised CustomerRecord
      */
-    public CustomerRecord(Integer id, String name, String email) {
+    public CustomerRecord(String id, String name, String email) {
         super(Customer.CUSTOMER);
 
         setId(id);

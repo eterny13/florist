@@ -15,4 +15,9 @@ public class CustomerRepositoryDb implements CustomerRepository {
     public void persist(Customer customer) {
         customerTableMapper.persist(customer);
     }
+
+    @Override
+    public Customer get(String customerId) {
+        return customerTableMapper.get(customerId);
+    }
 }

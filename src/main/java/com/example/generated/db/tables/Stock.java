@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
@@ -51,9 +52,14 @@ public class Stock extends TableImpl<StockRecord> {
     }
 
     /**
-     * The column <code>florist.stock.code</code>.
+     * The column <code>florist.stock.id</code>.
      */
-    public final TableField<StockRecord, Integer> CODE = createField(DSL.name("code"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<StockRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+
+    /**
+     * The column <code>florist.stock.flower_code</code>.
+     */
+    public final TableField<StockRecord, Integer> FLOWER_CODE = createField(DSL.name("flower_code"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>florist.stock.flower_name</code>.
@@ -102,6 +108,11 @@ public class Stock extends TableImpl<StockRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Florist.FLORIST;
+    }
+
+    @Override
+    public Identity<StockRecord, Integer> getIdentity() {
+        return (Identity<StockRecord, Integer>) super.getIdentity();
     }
 
     @Override

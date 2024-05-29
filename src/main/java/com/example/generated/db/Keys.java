@@ -6,9 +6,11 @@ package com.example.generated.db;
 
 import com.example.generated.db.tables.Customer;
 import com.example.generated.db.tables.FlywaySchemaHistory;
+import com.example.generated.db.tables.OrderDetail;
 import com.example.generated.db.tables.Stock;
 import com.example.generated.db.tables.records.CustomerRecord;
 import com.example.generated.db.tables.records.FlywaySchemaHistoryRecord;
+import com.example.generated.db.tables.records.OrderDetailRecord;
 import com.example.generated.db.tables.records.StockRecord;
 
 import org.jooq.TableField;
@@ -30,5 +32,6 @@ public class Keys {
 
     public static final UniqueKey<CustomerRecord> KEY_CUSTOMER_PRIMARY = Internal.createUniqueKey(Customer.CUSTOMER, DSL.name("KEY_customer_PRIMARY"), new TableField[] { Customer.CUSTOMER.ID }, true);
     public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("KEY_flyway_schema_history_PRIMARY"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
-    public static final UniqueKey<StockRecord> KEY_STOCK_PRIMARY = Internal.createUniqueKey(Stock.STOCK, DSL.name("KEY_stock_PRIMARY"), new TableField[] { Stock.STOCK.CODE }, true);
+    public static final UniqueKey<OrderDetailRecord> KEY_ORDER_DETAIL_PRIMARY = Internal.createUniqueKey(OrderDetail.ORDER_DETAIL, DSL.name("KEY_order_detail_PRIMARY"), new TableField[] { OrderDetail.ORDER_DETAIL.ID }, true);
+    public static final UniqueKey<StockRecord> KEY_STOCK_PRIMARY = Internal.createUniqueKey(Stock.STOCK, DSL.name("KEY_stock_PRIMARY"), new TableField[] { Stock.STOCK.ID }, true);
 }

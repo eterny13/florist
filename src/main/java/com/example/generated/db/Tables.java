@@ -6,6 +6,7 @@ package com.example.generated.db;
 
 import com.example.generated.db.tables.Customer;
 import com.example.generated.db.tables.FlywaySchemaHistory;
+import com.example.generated.db.tables.OrderDetail;
 import com.example.generated.db.tables.Stock;
 
 
@@ -24,6 +25,11 @@ public class Tables {
      * The table <code>florist.flyway_schema_history</code>.
      */
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    /**
+     * The table <code>florist.order_detail</code>.
+     */
+    public static final OrderDetail ORDER_DETAIL = OrderDetail.ORDER_DETAIL;
 
     /**
      * The table <code>florist.stock</code>.

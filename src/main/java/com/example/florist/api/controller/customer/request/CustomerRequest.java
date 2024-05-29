@@ -1,5 +1,10 @@
 package com.example.florist.api.controller.customer.request;
 
-public record CustomerRequest(String name,
-                              String email) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record CustomerRequest(
+        @JsonProperty("name")
+        String name,
+        @JsonProperty("email")
+        String email) {
 }

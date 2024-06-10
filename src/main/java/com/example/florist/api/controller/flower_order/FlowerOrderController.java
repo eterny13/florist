@@ -4,6 +4,7 @@ import com.example.florist.api.controller.flower_order.request.FlowerOrderReques
 import com.example.florist.service.flower_order.FlowerOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +20,10 @@ public class FlowerOrderController {
 
     @RequestMapping(value = "/flower-orders", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody List<FlowerOrderRequest> requests) {
+    public ResponseEntity<?> post(@RequestBody List<FlowerOrderRequest> requests) {
         requests.forEach(x ->
                 flowerOrderService.order(x.flowerCode(), x.quantity())
         );
-        return "Flower Order Success";
+        return ResponseEntity.ok("Flower Order Success");
     }
 }

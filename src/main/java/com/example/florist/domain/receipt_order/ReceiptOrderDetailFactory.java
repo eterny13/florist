@@ -21,15 +21,12 @@ public class ReceiptOrderDetailFactory {
             String recipientPhoneNumber,
             List<Bouquet> bouquets) {
         var bouquet = bouquets.find(x -> x.getCode() == bouquetId);
-        if (bouquet.isEmpty()) {
-            throw new RuntimeException("bouquetId does not exist");
-        }
         return new ReceiptOrderDetail(
                 customer,
                 LocalDate.parse(deliveryDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 deliveryAddress,
                 recipientName,
-                bouquet.get(),
+                bouquet.getOrElseThrow(() -> new RuntimeException("NotFound Error: bouquetId does not exist")),
                 deliveryMessage,
                 recipientPhoneNumber);
     }

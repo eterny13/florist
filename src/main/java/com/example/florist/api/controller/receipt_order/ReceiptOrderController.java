@@ -1,10 +1,12 @@
 package com.example.florist.api.controller.receipt_order;
 
-import com.example.florist.api.controller.receipt_order.request.ReceiptOrderRequest;
+import com.example.florist.api.controller.receipt_order.request.ReceiptOrderDetailRequest;
+import com.example.florist.api.controller.receipt_order.response.ReceiptOrderDetailResponse;
 import com.example.florist.service.receipt_order.ReceiptOrderService;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,8 +20,8 @@ public class ReceiptOrderController {
 
     @RequestMapping(value = "/receipt-order", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody ReceiptOrderRequest request) {
-        receiptOrderService.receive(
+    public ResponseEntity<?> post(@RequestBody ReceiptOrderDetailRequest request) {
+        var receiptOrderDetail = receiptOrderService.receive(
                 request.customerId(),
                 request.deliveryDate(),
                 request.deliveryAddress(),
@@ -28,6 +30,6 @@ public class ReceiptOrderController {
                 Option.of(request.deliveryMessage()),
                 request.recipientPhoneNumber()
         );
-        return "Success to receive orders";
+        return ResponseEntity.ok(ReceiptOrderDetailResponse.of(receiptOrderDetail));
     }
 }

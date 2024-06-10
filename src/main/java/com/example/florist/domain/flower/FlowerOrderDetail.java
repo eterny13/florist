@@ -13,7 +13,7 @@ public class FlowerOrderDetail {
 
     public FlowerOrderDetail(Option<Flower> flower, int quantity) {
         if (quantity < flower.get().getMinUnitQuantity()) {
-            throw new RuntimeException("Ordered quantity is lower than minimum unit quantity of the flower.");
+            throw new RuntimeException("Validation Error: Ordered quantity is lower than minimum unit quantity of the flower.");
         }
         this.flower = flower.getOrElseThrow(() -> new RuntimeException("Undefined flower code"));
         this.quantity = quantity;

@@ -13,7 +13,7 @@ import com.example.generated.db.tables.Stock;
 /**
  * Convenience access to all tables in florist.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
+@SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Tables {
 
     /**

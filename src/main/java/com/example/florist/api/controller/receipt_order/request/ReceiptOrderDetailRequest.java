@@ -2,7 +2,7 @@ package com.example.florist.api.controller.receipt_order.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record ReceiptOrderRequest(
+public record ReceiptOrderDetailRequest(
         @JsonProperty("customer_id")
         String customerId,
         @JsonProperty("delivery_date")

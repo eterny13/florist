@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class FlowerOrderController {
+public class FlowerOrderApi {
     private final FlowerOrderService flowerOrderService;
 
     @RequestMapping(value = "/flower-orders", method = RequestMethod.POST)

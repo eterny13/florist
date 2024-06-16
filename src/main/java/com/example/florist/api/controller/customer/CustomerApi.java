@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-public class CustomerController {
+public class CustomerApi {
     private static final String value = "/customers";
     private final CustomerService service;
 

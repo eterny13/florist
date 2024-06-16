@@ -1,7 +1,8 @@
 package com.example.florist.api.controller.general;
 
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {

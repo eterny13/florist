@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class ReceiptOrderController {
+public class ReceiptOrderApi {
     private final ReceiptOrderService receiptOrderService;
 
     @RequestMapping(value = "/receipt-order", method = RequestMethod.POST)

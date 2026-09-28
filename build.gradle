@@ -1,31 +1,31 @@
 buildscript {
     dependencies {
-        classpath "org.flywaydb:flyway-mysql:9.17.0"
-        classpath "com.mysql:mysql-connector-j:8.3.0"
+        classpath "org.flywaydb:flyway-mysql:10.22.0"
+        classpath "com.mysql:mysql-connector-j:9.3.0"
     }
 }
 
 plugins {
     id 'java'
     id 'groovy'
-    id 'org.springframework.boot' version '3.2.4'
-    id 'io.spring.dependency-management' version '1.1.4'
-    id "org.jooq.jooq-codegen-gradle" version "3.19.8"
-    id 'org.flywaydb.flyway' version '9.17.0'
+    id 'org.springframework.boot' version '4.1.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "org.jooq.jooq-codegen-gradle" version "3.19.18"
+    id 'org.flywaydb.flyway' version '10.22.0'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 ext {
-    lombokVersion = '1.18.30'
-    groovyVersion = '4.0.20'
-    vavrVersion = '0.10.3'
-    axonVersion = "4.9.3"
-    jooqVersion = "3.19.8"
-    mysqlConnectorVersion = '8.3.0'
-    spockVersion = '2.4-M4-groovy-4.0'
+    lombokVersion = '1.18.36'
+    groovyVersion = '4.0.24'
+    vavrVersion = '1.0.1'
+    jooqVersion = "3.19.18"
+    mysqlConnectorVersion = '9.3.0'
+    spockVersion = '2.4-M5-groovy-4.0'
     spockSubjectCollaboratorsVersion = '2.0.1'
+    flywayVersion = '10.22.0'
 }
 
 java {
@@ -49,23 +49,20 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     // vavr
     implementation "io.vavr:vavr:${vavrVersion}"
-    implementation "io.vavr:vavr-jackson:${vavrVersion}"
     // jooq
     implementation "org.jooq:jooq:${jooqVersion}"
     implementation "org.jooq:jooq-meta:${jooqVersion}"
     // flyway
-    implementation "org.flywaydb:flyway-core:9.17.0"
-    implementation "org.flywaydb:flyway-mysql:9.17.0"
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
 
     implementation "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
 
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.4'
-
     jooqCodegen "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
-    jooqCodegen "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    jooqCodegen "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
 
     // テストスイートライブラリ
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation "org.spockframework:spock-core:${spockVersion}"
     // Springのコントローラテストで必要
     testImplementation "org.spockframework:spock-spring:${spockVersion}"

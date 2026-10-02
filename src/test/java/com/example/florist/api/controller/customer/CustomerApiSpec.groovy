@@ -1,10 +1,17 @@
 package com.example.florist.api.controller.customer
 
 import com.example.florist.api.controller.customer.request.FixtureCustomerRequest
+import com.example.florist.domain.customer.Customer
+import com.example.florist.domain.customer.CustomerId
+import com.example.florist.domain.customer.CustomerName
+import com.example.florist.domain.customer.EmailAddress
+import com.example.florist.domain.shared.DomainError
 import com.example.florist.service.customer.CustomerService
+import io.vavr.collection.Vector
+import io.vavr.control.Either
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -17,8 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@AutoConfigureMockMvc
-@SpringBootTest
+@WebMvcTest(CustomerApi)
 @Unroll
 class CustomerApiSpec extends Specification {
     @MockitoBean
@@ -27,6 +33,18 @@ class CustomerApiSpec extends Specification {
     MockMvc mockMvc
 
     def "CustomerApi post #label"() {
+        given:
+        if (label == "Normal") {
+            Mockito.when(customerService.register(Mockito.anyString(), Mockito.anyString()))
+                    .thenReturn(Either.right(new Customer(new CustomerId("abcd1234"), new CustomerName("Steve Gatt"), new EmailAddress("abc@example.com"))))
+        } else if (label == "Empty Name") {
+            Mockito.when(customerService.register(Mockito.eq(""), Mockito.anyString()))
+                    .thenReturn(Either.left(Vector.of(new DomainError.ValidationError("name", "Name must not be blank"))))
+        } else if (label == "Illegal Email") {
+            Mockito.when(customerService.register(Mockito.anyString(), Mockito.eq("example.com")))
+                    .thenReturn(Either.left(Vector.of(new DomainError.ValidationError("email", "Invalid email format: example.com"))))
+        }
+
         when:
         ResultActions response = mockMvc.perform(
                 post("/customers")
@@ -40,7 +58,7 @@ class CustomerApiSpec extends Specification {
 
         where:
         label           | request                                    || httpStatus             | mediaType
-        "Normal"        | FixtureCustomerRequest.asStringNormal()    || HttpStatus.OK          | MediaType.TEXT_PLAIN
+        "Normal"        | FixtureCustomerRequest.asStringNormal()    || HttpStatus.CREATED     | MediaType.TEXT_PLAIN
         "Empty Name"    | FixtureCustomerRequest.asStringEmptyName() || HttpStatus.BAD_REQUEST | MediaType.APPLICATION_PROBLEM_JSON
         "Illegal Email" | FixtureCustomerRequest.asStringIllegal()   || HttpStatus.BAD_REQUEST | MediaType.APPLICATION_PROBLEM_JSON
     }

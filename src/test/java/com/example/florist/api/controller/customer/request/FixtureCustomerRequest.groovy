@@ -1,6 +1,5 @@
 package com.example.florist.api.controller.customer.request
 
-
 import groovy.json.JsonBuilder
 
 class FixtureCustomerRequest {

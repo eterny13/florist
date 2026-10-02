@@ -2,14 +2,15 @@ package com.example.florist.domain.receipt_order
 
 import com.example.florist.domain.customer.FixtureCustomer
 import com.example.florist.domain.flower.FixtureBouquet
-import io.vavr.collection.List
+import com.example.florist.domain.shared.DomainError
+import io.vavr.collection.Vector
 import io.vavr.control.Option
 import spock.lang.Specification
 
 class ReceiptOrderDetailFactorySpec extends Specification {
     def "create ReceiptOrderDetail #label"() {
         when:
-        def actual = ReceiptOrderDetailFactory.create(
+        def actualResult = ReceiptOrderDetailFactory.create(
                 FixtureCustomer.get(),
                 "2024-01-01",
                 "Shinjuku, Tokyo",
@@ -17,20 +18,21 @@ class ReceiptOrderDetailFactorySpec extends Specification {
                 bouquetId,
                 Option.none(),
                 "12345678",
-                List.of(bouquet)
+                Vector.of(bouquet)
         )
 
         then:
-        actual == expected
+        actualResult.isRight()
+        actualResult.get() == expected
 
         where:
         label    | bouquetId | bouquet               | expected
         "normal" | 1         | FixtureBouquet.get1() | FixtureReceiptOrderDetail.getNormal()
     }
 
-    def "BouquetId does not exist"() {
+    def "BouquetId does not exist returns NotFoundError"() {
         when:
-        ReceiptOrderDetailFactory.create(
+        def actualResult = ReceiptOrderDetailFactory.create(
                 FixtureCustomer.get(),
                 "2024-01-01",
                 "Shinjuku, Tokyo",
@@ -38,11 +40,12 @@ class ReceiptOrderDetailFactorySpec extends Specification {
                 2,
                 Option.none(),
                 "12345678",
-                List.of(FixtureBouquet.get1())
+                Vector.of(FixtureBouquet.get1())
         )
 
         then:
-        RuntimeException e = thrown()
-        e.getMessage() == "NotFound Error: bouquetId does not exist"
+        actualResult.isLeft()
+        actualResult.getLeft() instanceof DomainError.NotFoundError
+        ((DomainError.NotFoundError) actualResult.getLeft()).message() == "Bouquet not found for id: 2"
     }
 }

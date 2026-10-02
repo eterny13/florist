@@ -16,7 +16,7 @@ public record FlowerOrderDetail(
         if (!quantity.isGreaterThanOrEqual(flower.getMinUnitQuantity())) {
             return Either.left(new DomainError.ValidationError(
                     "quantity",
-                    "Ordered quantity " + quantity.value() + " is lower than minimum unit quantity " + flower.getMinUnitQuantity().value() + " of " + flower.getName()
+                    "Ordered quantity " + quantity.value() + " is lower than minimum unit quantity " + flower.getMinUnitQuantity().value() + " of " + flower.getName().value()
             ));
         }
         LocalDate arrivalDate = flower.calculateArrivalDate(orderDate);

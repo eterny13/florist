@@ -12,6 +12,9 @@ public record DeliveryMessage(Option<String> value) {
     }
 
     public static DeliveryMessage ofOption(Option<String> option) {
+        if (option == null) {
+            return EMPTY;
+        }
         return new DeliveryMessage(option.filter(s -> !s.isBlank()));
     }
 

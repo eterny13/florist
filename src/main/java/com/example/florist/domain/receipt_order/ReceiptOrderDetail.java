@@ -11,16 +11,16 @@ import java.time.LocalDate;
 public record ReceiptOrderDetail(
         Customer customer,
         LocalDate deliveryDate,
-        String deliveryAddress,
+        DeliveryAddress deliveryAddress,
         String recipientName,
         Bouquet bouquet,
-        Option<String> deliveryMessage,
-        String recipientPhoneNumber,
+        DeliveryMessage deliveryMessage,
+        PhoneNumber recipientPhoneNumber,
         Vector<StockAllocation> allocations
 ) {
     public ReceiptOrderDetail {
         if (deliveryMessage == null) {
-            deliveryMessage = Option.none();
+            deliveryMessage = DeliveryMessage.empty();
         }
         if (allocations == null) {
             allocations = Vector.empty();
@@ -39,11 +39,11 @@ public record ReceiptOrderDetail(
         return new ReceiptOrderDetail(
                 customer,
                 deliveryDate,
-                deliveryAddress,
+                new DeliveryAddress(deliveryAddress),
                 recipientName,
                 bouquet,
-                deliveryMessage,
-                recipientPhoneNumber,
+                DeliveryMessage.ofOption(deliveryMessage),
+                new PhoneNumber(recipientPhoneNumber),
                 Vector.empty()
         );
     }

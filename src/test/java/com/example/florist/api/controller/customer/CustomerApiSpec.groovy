@@ -1,10 +1,7 @@
 package com.example.florist.api.controller.customer
 
 import com.example.florist.api.controller.customer.request.FixtureCustomerRequest
-import com.example.florist.domain.customer.Customer
-import com.example.florist.domain.customer.CustomerId
-import com.example.florist.domain.customer.CustomerName
-import com.example.florist.domain.customer.EmailAddress
+import com.example.florist.domain.customer.FixtureCustomer
 import com.example.florist.domain.shared.DomainError
 import com.example.florist.service.customer.CustomerService
 import io.vavr.collection.Vector
@@ -36,7 +33,7 @@ class CustomerApiSpec extends Specification {
         given:
         if (label == "Normal") {
             Mockito.when(customerService.register(Mockito.anyString(), Mockito.anyString()))
-                    .thenReturn(Either.right(new Customer(new CustomerId("abcd1234"), new CustomerName("Steve Gatt"), new EmailAddress("abc@example.com"))))
+                    .thenReturn(Either.right(FixtureCustomer.of("abcd1234", "Steve Gatt", "abc@example.com")))
         } else if (label == "Empty Name") {
             Mockito.when(customerService.register(Mockito.eq(""), Mockito.anyString()))
                     .thenReturn(Either.left(Vector.of(new DomainError.ValidationError("name", "Name must not be blank"))))

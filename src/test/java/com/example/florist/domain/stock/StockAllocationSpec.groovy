@@ -1,7 +1,8 @@
 package com.example.florist.domain.stock
 
-import com.example.florist.domain.flower.*
-import com.example.florist.domain.shared.Days
+import com.example.florist.domain.flower.Bouquet
+import com.example.florist.domain.flower.BouquetCode
+import com.example.florist.domain.flower.FixtureFlower
 import com.example.florist.domain.shared.DomainError
 import com.example.florist.domain.shared.Quantity
 import io.vavr.collection.HashMap
@@ -16,7 +17,7 @@ class StockAllocationSpec extends Specification {
 
     def "お届け日における日持ち日数（品質保持期限）の在庫引当判定 #label"() {
         given: "入荷日 2024-05-10、日持ち日数5日のRose（有効期限: 2024-05-15）"
-        def rose = new Flower(new FlowerCode(1), new FlowerName("Rose"), new Quantity(10), new Days(2), new Days(5))
+        def rose = FixtureFlower.of(1, "Rose", 10, 2, 5)
         def stock = new Stock(Vector.of(
                 new StockLot(rose, new Quantity(10), new Quantity(10), LocalDate.of(2024, 5, 10))
         ))
@@ -41,7 +42,7 @@ class StockAllocationSpec extends Specification {
 
     def "複数ロットからのFIFO（古い入荷日順）引当と残数計算"() {
         given: "2つのロット（Lot1: 5/10入荷 残5本、Lot2: 5/12入荷 残10本）"
-        def rose = new Flower(new FlowerCode(1), new FlowerName("Rose"), new Quantity(10), new Days(2), new Days(5))
+        def rose = FixtureFlower.of(1, "Rose", 10, 2, 5)
         def lot1 = new StockLot(rose, new Quantity(10), new Quantity(5), LocalDate.of(2024, 5, 10))
         def lot2 = new StockLot(rose, new Quantity(10), new Quantity(10), LocalDate.of(2024, 5, 12))
         def stock = new Stock(Vector.of(lot1, lot2))
@@ -64,5 +65,56 @@ class StockAllocationSpec extends Specification {
         // 更新後の在庫残数
         updatedStock.lots().get(0).remainingQuantity() == new Quantity(0)
         updatedStock.lots().get(1).remainingQuantity() == new Quantity(7)
+    }
+
+    def '在庫不足なら変更前の在庫量を報告し一部引当を発生させない'() {
+        given:
+        def rose = FixtureFlower.of(1, 'Rose', 1, 0, 5)
+        def cosmos = FixtureFlower.of(2, 'Cosmos', 1, 0, 5)
+        def stock = new Stock(Vector.of(
+                StockLot.of(rose, 10, 10, LocalDate.of(2024, 5, 1)),
+                StockLot.of(cosmos, 4, 4, LocalDate.of(2024, 5, 1))
+        ))
+        def bouquet = Bouquet.of(new BouquetCode(1), HashMap.of(rose, 5, cosmos, 5))
+
+        when:
+        def result = stock.allocate(bouquet, LocalDate.of(2024, 5, 2))
+
+        then:
+        result.isLeft()
+        result.getLeft() == new DomainError.OutOfStockError(cosmos, new Quantity(5), new Quantity(4))
+        stock.lots().map { it.remainingQuantity().value() }.toJavaList() == [10, 4]
+    }
+
+    def 'fresh quantity ignores other flowers expired lots and depleted lots and sorts by arrival date'() {
+        given:
+        def rose = FixtureFlower.of(1, 'Rose', 1, 0, 2)
+        def tulip = FixtureFlower.of(2, 'Tulip', 1, 0, 9)
+        def stock = new Stock(Vector.of(
+                StockLot.of(rose, 5, 0, LocalDate.of(2024, 5, 4)),
+                StockLot.of(tulip, 5, 5, LocalDate.of(2024, 5, 1)),
+                StockLot.of(rose, 5, 3, LocalDate.of(2024, 5, 3)),
+                StockLot.of(rose, 5, 2, LocalDate.of(2024, 5, 1))
+        ))
+
+        expect:
+        stock.freshLots(rose, LocalDate.of(2024, 5, 3)).map { it.arrivalDate() }.toJavaList() ==
+                [LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 3)]
+        stock.totalFreshQuantity(rose, LocalDate.of(2024, 5, 3)) == new Quantity(5)
+    }
+
+    def 'empty bouquet allocates successfully without changing stock'() {
+        given:
+        def stock = Stock.empty().addLot(StockLot.ofNewArrival(FixtureFlower.getRose(), new Quantity(3), LocalDate.of(2024, 1, 1)))
+        def bouquet = Bouquet.ofQuantities(new BouquetCode(1), HashMap.empty())
+
+        when:
+        def result = stock.allocate(bouquet, LocalDate.of(2024, 1, 1))
+
+        then:
+        result.isRight()
+        result.get()._1 == stock
+        result.get()._2.isEmpty()
+        Stock.empty().lots().isEmpty()
     }
 }

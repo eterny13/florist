@@ -1,22 +1,25 @@
 package com.example.florist.domain.flower;
 
-import io.vavr.control.Option;
-import lombok.Value;
+import com.example.florist.domain.shared.DomainError;
+import com.example.florist.domain.shared.Quantity;
+import io.vavr.control.Either;
 
 import java.time.LocalDate;
 
-@Value
-public class FlowerOrderDetail {
-    Flower flower;
-    int quantity;
-    LocalDate arrivalDate;
-
-    public FlowerOrderDetail(Option<Flower> flower, int quantity) {
-        if (quantity < flower.get().getMinUnitQuantity()) {
-            throw new RuntimeException("Validation Error: Ordered quantity is lower than minimum unit quantity of the flower.");
+public record FlowerOrderDetail(
+        Flower flower,
+        Quantity quantity,
+        LocalDate orderDate,
+        LocalDate arrivalDate
+) {
+    public static Either<DomainError, FlowerOrderDetail> create(Flower flower, Quantity quantity, LocalDate orderDate) {
+        if (!quantity.isGreaterThanOrEqual(flower.getMinUnitQuantity())) {
+            return Either.left(new DomainError.ValidationError(
+                    "quantity",
+                    "Ordered quantity " + quantity.value() + " is lower than minimum unit quantity " + flower.getMinUnitQuantity().value() + " of " + flower.getName()
+            ));
         }
-        this.flower = flower.getOrElseThrow(() -> new RuntimeException("Undefined flower code"));
-        this.quantity = quantity;
-        this.arrivalDate = LocalDate.now().plusDays(this.flower.getOrderLeadTime());
+        LocalDate arrivalDate = flower.calculateArrivalDate(orderDate);
+        return Either.right(new FlowerOrderDetail(flower, quantity, orderDate, arrivalDate));
     }
 }

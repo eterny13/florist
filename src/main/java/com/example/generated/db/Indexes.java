@@ -3,7 +3,6 @@
  */
 package com.example.generated.db;
 
-
 import com.example.generated.db.tables.FlywaySchemaHistory;
 import org.jooq.Index;
 import org.jooq.OrderField;

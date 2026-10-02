@@ -3,7 +3,6 @@
  */
 package com.example.generated.db;
 
-
 import org.jooq.Constants;
 import org.jooq.Schema;
 import org.jooq.impl.CatalogImpl;

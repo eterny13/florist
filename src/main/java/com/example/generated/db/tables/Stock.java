@@ -3,24 +3,10 @@
  */
 package com.example.generated.db.tables;
 
-
 import com.example.generated.db.Florist;
 import com.example.generated.db.Keys;
 import com.example.generated.db.tables.records.StockRecord;
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Name;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;

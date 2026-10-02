@@ -3,7 +3,6 @@
  */
 package com.example.generated.db;
 
-
 import com.example.generated.db.tables.Customer;
 import com.example.generated.db.tables.FlywaySchemaHistory;
 import com.example.generated.db.tables.OrderDetail;

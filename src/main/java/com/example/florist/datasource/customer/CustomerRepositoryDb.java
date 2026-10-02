@@ -1,10 +1,11 @@
 package com.example.florist.datasource.customer;
 
 import com.example.florist.domain.customer.Customer;
+import com.example.florist.domain.customer.CustomerId;
 import com.example.florist.service.customer.CustomerRepository;
+import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 
 @Component
 @RequiredArgsConstructor
@@ -13,11 +14,11 @@ public class CustomerRepositoryDb implements CustomerRepository {
 
     @Override
     public void persist(Customer customer) {
-        customerTableMapper.persist(customer);
+        customerTableMapper.insert(customer);
     }
 
     @Override
-    public Customer get(String customerId) {
-        return customerTableMapper.get(customerId);
+    public Option<Customer> findById(CustomerId customerId) {
+        return customerTableMapper.findById(customerId.value());
     }
 }

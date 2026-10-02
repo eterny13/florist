@@ -1,25 +1,26 @@
 package com.example.florist.domain.flower
 
+import com.example.florist.domain.shared.Quantity
 import io.vavr.collection.HashMap
 import spock.lang.Specification
 
 class FixtureBouquet extends Specification {
-    static get1() {
-        new Bouquet(
-                1,
-                HashMap.<Flower, Integer> of(
-                        FixtureFlower.getRose(), 10,
-                        FixtureFlower.getCosmos(), 5
+    static Bouquet get1() {
+        Bouquet.of(
+                new BouquetCode(1),
+                HashMap.of(
+                        FixtureFlower.getRose(), new Quantity(10),
+                        FixtureFlower.getCosmos(), new Quantity(5)
                 )
         )
     }
 
-    static get2() {
-        new Bouquet(
-                2,
-                HashMap.<Flower, Integer> of(
-                        FixtureFlower.getCosmos(), 10,
-                        FixtureFlower.getTulip(), 5
+    static Bouquet get2() {
+        Bouquet.of(
+                new BouquetCode(2),
+                HashMap.of(
+                        FixtureFlower.getCosmos(), new Quantity(10),
+                        FixtureFlower.getTulip(), new Quantity(5)
                 )
         )
     }

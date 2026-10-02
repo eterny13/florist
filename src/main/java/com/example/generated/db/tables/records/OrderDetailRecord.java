@@ -3,7 +3,6 @@
  */
 package com.example.generated.db.tables.records;
 
-
 import com.example.generated.db.tables.OrderDetail;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;

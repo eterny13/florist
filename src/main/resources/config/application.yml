@@ -9,4 +9,4 @@ spring:
     sql-dialect: mysql
 
   flyway:
-    enabled: false
+    enabled: true

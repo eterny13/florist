@@ -1,9 +1,11 @@
 package com.example.florist.domain.customer
 
-import spock.lang.Specification
-
-class FixtureCustomer extends Specification {
+class FixtureCustomer {
     static Customer get() {
-        new Customer(new CustomerId("test_id"), new CustomerName("John Doe"), new EmailAddress("john@example.com"))
+        of("test_id", "John Doe", "john@example.com")
+    }
+
+    static Customer of(String id, String name, String email) {
+        new Customer(new CustomerId(id), new CustomerName(name), new EmailAddress(email))
     }
 }

@@ -2,9 +2,8 @@ package com.example.florist.domain.flower
 
 import com.example.florist.domain.shared.Quantity
 import io.vavr.collection.HashMap
-import spock.lang.Specification
 
-class FixtureBouquet extends Specification {
+class FixtureBouquet {
     static Bouquet get1() {
         Bouquet.of(
                 new BouquetCode(1),

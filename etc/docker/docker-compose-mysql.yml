@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:8.4
     container_name: mysql_florist
     environment:
       MYSQL_ROOT_PASSWORD: "admin"
@@ -11,3 +11,8 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20

@@ -12,26 +12,33 @@ compileGroovy.options.encoding = defaultEncoding
 compileTestJava.options.encoding = defaultEncoding
 compileTestGroovy.options.encoding = defaultEncoding
 
-// Javaコードの中にGroovyのコードが混じるので、それに対応させる
 sourceSets {
     main {
-        java.srcDirs = []
-        groovy.srcDirs = ['src/main/java']
-        resources {
-            srcDir 'src/main/java'
-        }
+        java.srcDirs = ['src/main/java']
+        resources.srcDirs = ['src/main/resources']
     }
 
     test {
         java.srcDirs = []
-        groovy.srcDirs = ['src/test/java']
+        groovy.srcDirs = ['src/test/java', 'src/test/groovy']
+        resources.srcDirs = ['src/test/resources']
     }
 
-    gradle {
+    integrationTest {
         java.srcDirs = []
-        groovy.srcDirs = ['src/gradle/groovy']
+        groovy.srcDirs = ['src/integrationTest/java', 'src/integrationTest/groovy']
+        resources.srcDirs = ['src/integrationTest/resources']
+        compileClasspath = sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath = output + compileClasspath
     }
 }
+
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+compileIntegrationTestGroovy.options.encoding = defaultEncoding
 
 // コンパイル時に非推奨クラスの警告を表示する
 tasks.withType(JavaCompile) {
@@ -56,4 +63,26 @@ test {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.register('unitTests') {
+    description = 'Runs the unit tests.'
+    group = 'verification'
+    dependsOn tasks.named('test')
+}
+
+tasks.register('integrationTests', Test) {
+    description = 'Runs integration tests against the local MySQL database.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    dependsOn tasks.named('flywayMigrate')
+    shouldRunAfter test
+    useJUnitPlatform()
+}
+
+tasks.register('integrationTest') {
+    description = 'Compatibility alias for integrationTests.'
+    group = 'verification'
+    dependsOn tasks.named('integrationTests')
 }

@@ -17,10 +17,10 @@ public class ReceiptOrderTableMapper {
                 .set(ORDER_DETAIL.CUSTOMER_ID, receiptOrderDetail.customer().getId().value())
                 .set(ORDER_DETAIL.BOUQUET_CODE, receiptOrderDetail.bouquet().getCode().value())
                 .set(ORDER_DETAIL.RECIPIENT_NAME, receiptOrderDetail.recipientName())
-                .set(ORDER_DETAIL.DELIVERY_ADDRESS, receiptOrderDetail.deliveryAddress())
+                .set(ORDER_DETAIL.DELIVERY_ADDRESS, receiptOrderDetail.deliveryAddress().value())
                 .set(ORDER_DETAIL.DELIVERY_DATE, receiptOrderDetail.deliveryDate())
-                .set(ORDER_DETAIL.DELIVERY_MESSAGE, receiptOrderDetail.deliveryMessage().getOrNull())
-                .set(ORDER_DETAIL.RECIPIENT_PHONE_NUMBER, receiptOrderDetail.recipientPhoneNumber())
+                .set(ORDER_DETAIL.DELIVERY_MESSAGE, receiptOrderDetail.deliveryMessage().value().getOrNull())
+                .set(ORDER_DETAIL.RECIPIENT_PHONE_NUMBER, receiptOrderDetail.recipientPhoneNumber().value())
                 .execute();
     }
 }

@@ -1,14 +1,16 @@
 package com.example.florist.api.controller.flower_order;
 
 import com.example.florist.api.controller.flower_order.request.FlowerOrderRequest;
+import com.example.florist.api.controller.general.DomainException;
 import com.example.florist.domain.flower.FlowerOrderDetail;
 import com.example.florist.domain.shared.DomainError;
 import com.example.florist.service.flower_order.FlowerOrderService;
 import io.vavr.collection.Vector;
 import io.vavr.control.Either;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,19 +28,25 @@ public class FlowerOrderApi {
     private final FlowerOrderService flowerOrderService;
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody List<FlowerOrderRequest> requests) {
+    public ResponseEntity<?> post(@Valid @RequestBody List<@NotNull @Valid FlowerOrderRequest> requests) {
         Vector<Either<DomainError, FlowerOrderDetail>> results = Vector.ofAll(requests)
-                .map(r -> flowerOrderService.order(r.flowerCode(), r.quantity()));
+                .map(request -> flowerOrderService.order(request.flowerCode(), request.quantity()));
 
-        Vector<DomainError> errors = results.filter(Either::isLeft).map(Either::getLeft);
+        Vector<DomainError> errors = results
+                .filter(Either::isLeft)
+                .map(Either::getLeft);
         if (errors.nonEmpty()) {
-            String errorMsg = errors.map(Object::toString).mkString(", ");
-            var problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-            problemDetail.setType(FLOWER_ORDERS_URI);
-            problemDetail.setDetail(errorMsg);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+            throw new DomainException(errors, FLOWER_ORDERS_URI);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Flower Order Success");
+        return results.foldLeft(
+                ResponseEntity.status(HttpStatus.CREATED).body("Flower Order Success"),
+                (response, result) -> result.fold(
+                        error -> {
+                            throw new DomainException(Vector.of(error), FLOWER_ORDERS_URI);
+                        },
+                        detail -> response
+                )
+        );
     }
 }

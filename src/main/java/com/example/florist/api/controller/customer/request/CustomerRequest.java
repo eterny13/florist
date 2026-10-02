@@ -1,10 +1,11 @@
 package com.example.florist.api.controller.customer.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 
 public record CustomerRequest(
-        @JsonProperty("name") String name,
-        @JsonProperty("email") String email
+        @NotNull @JsonProperty("name") String name,
+        @NotNull @JsonProperty("email") String email
 ) {
     public String getName() {
         return name;

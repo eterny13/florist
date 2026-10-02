@@ -1,20 +1,21 @@
 package com.example.florist.api.controller.receipt_order.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 
 public record ReceiptOrderDetailRequest(
         @JsonProperty("customer_id")
-        String customerId,
+        @NotNull String customerId,
         @JsonProperty("delivery_date")
-        String deliveryDate,
+        @NotNull String deliveryDate,
         @JsonProperty("delivery_address")
-        String deliveryAddress,
+        @NotNull String deliveryAddress,
         @JsonProperty("recipient_name")
-        String recipientName,
+        @NotNull String recipientName,
         @JsonProperty("bouquet_id")
-        int bouquetId,
+        @NotNull Integer bouquetId,
         @JsonProperty("delivery_message")
         String deliveryMessage,
         @JsonProperty("recipient_phone_number")
-        String recipientPhoneNumber) {
+        @NotNull String recipientPhoneNumber) {
 }

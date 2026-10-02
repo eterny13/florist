@@ -14,13 +14,13 @@ public class ReceiptOrderTableMapper {
 
     public void insert(ReceiptOrderDetail receiptOrderDetail) {
         dsl.insertInto(ORDER_DETAIL)
-                .set(ORDER_DETAIL.CUSTOMER_ID, receiptOrderDetail.getCustomer().getId())
-                .set(ORDER_DETAIL.BOUQUET_CODE, receiptOrderDetail.getBouquet().getCode())
-                .set(ORDER_DETAIL.RECIPIENT_NAME, receiptOrderDetail.getRecipientName())
-                .set(ORDER_DETAIL.DELIVERY_ADDRESS, receiptOrderDetail.getDeliveryAddress())
-                .set(ORDER_DETAIL.DELIVERY_DATE, receiptOrderDetail.getDeliveryDate())
-                .set(ORDER_DETAIL.DELIVERY_MESSAGE, receiptOrderDetail.getDeliveryMessage().get())
-                .set(ORDER_DETAIL.RECIPIENT_PHONE_NUMBER, receiptOrderDetail.getRecipientPhoneNumber())
+                .set(ORDER_DETAIL.CUSTOMER_ID, receiptOrderDetail.customer().getId().value())
+                .set(ORDER_DETAIL.BOUQUET_CODE, receiptOrderDetail.bouquet().getCode().value())
+                .set(ORDER_DETAIL.RECIPIENT_NAME, receiptOrderDetail.recipientName())
+                .set(ORDER_DETAIL.DELIVERY_ADDRESS, receiptOrderDetail.deliveryAddress())
+                .set(ORDER_DETAIL.DELIVERY_DATE, receiptOrderDetail.deliveryDate())
+                .set(ORDER_DETAIL.DELIVERY_MESSAGE, receiptOrderDetail.deliveryMessage().getOrNull())
+                .set(ORDER_DETAIL.RECIPIENT_PHONE_NUMBER, receiptOrderDetail.recipientPhoneNumber())
                 .execute();
     }
 }

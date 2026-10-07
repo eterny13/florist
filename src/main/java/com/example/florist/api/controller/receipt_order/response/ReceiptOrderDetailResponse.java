@@ -18,11 +18,11 @@ public record ReceiptOrderDetailResponse(
         return new ReceiptOrderDetailResponse(
                 receiptOrderDetail.customer().getId().value(),
                 receiptOrderDetail.deliveryDate().toString(),
-                receiptOrderDetail.deliveryAddress(),
+                receiptOrderDetail.deliveryAddress().value(),
                 receiptOrderDetail.recipientName(),
                 receiptOrderDetail.bouquet().getCode().value(),
-                receiptOrderDetail.deliveryMessage().getOrNull(),
-                receiptOrderDetail.recipientPhoneNumber()
+                receiptOrderDetail.deliveryMessage().value().getOrNull(),
+                receiptOrderDetail.recipientPhoneNumber().value()
         );
     }
 }

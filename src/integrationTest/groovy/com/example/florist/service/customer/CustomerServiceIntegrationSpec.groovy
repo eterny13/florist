@@ -5,7 +5,9 @@ import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
+import spock.lang.Unroll
 
+@Unroll
 @SpringBootTest
 class CustomerServiceIntegrationSpec extends Specification {
     @Autowired

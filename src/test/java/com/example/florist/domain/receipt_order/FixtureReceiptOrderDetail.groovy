@@ -3,11 +3,9 @@ package com.example.florist.domain.receipt_order
 import com.example.florist.domain.customer.FixtureCustomer
 import com.example.florist.domain.flower.FixtureBouquet
 import io.vavr.control.Option
-import spock.lang.Specification
-
 import java.time.LocalDate
 
-class FixtureReceiptOrderDetail extends Specification {
+class FixtureReceiptOrderDetail {
     static ReceiptOrderDetail getNormal() {
         ReceiptOrderDetail.of(
                 FixtureCustomer.get(),

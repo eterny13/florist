@@ -27,7 +27,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         return switch (error) {
             case DomainError.ValidationError validation -> "Validation Error: " + validation.message();
             case DomainError.NotFoundError notFound -> "Not Found Error: " + notFound.message();
-            case DomainError.OutOfStockError outOfStock -> "Out of Stock: " + outOfStock.flower().getName()
+            case DomainError.OutOfStockError outOfStock -> "Out of Stock: " + outOfStock.flower().getName().value()
                     + " (Required: " + outOfStock.requested().value()
                     + ", Available: " + outOfStock.available().value() + ")";
             case DomainError.BusinessRuleViolation violation -> violation.message();
